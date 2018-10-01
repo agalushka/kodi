@@ -21,7 +21,7 @@
   </extension>
 </addon>
 
-<addon id="context.dandy.kinopoisk.sc" name="Kinopoisk Search Content" version="1.7.5" provider-name="dandy">
+<addon id="context.dandy.kinopoisk.sc" name="Kinopoisk Search Content" version="1.7.9" provider-name="dandy">
   <requires>
     <import addon="xbmc.python" version="2.1.0"/>
     <import addon="script.module.xbmc.helpers" version="2.1.0"/>
@@ -156,7 +156,7 @@
   </extension>
 </addon>
 
-<addon id="plugin.video.dandy.videokvadrat.com" name="videokvadrat.com" version="1.1.1" provider-name="dandy">
+<addon id="plugin.video.dandy.videokvadrat.com" name="videokvadrat.com" version="1.1.2" provider-name="dandy">
     <requires>
         <import addon="xbmc.python" version="2.1.0"/>
         <import addon="script.module.xbmc.helpers" version="2.1.0"/>
@@ -223,7 +223,7 @@
   </extension>
 </addon>
 
-<addon id="plugin.video.kinoprosmotr.net" name="Kinoprosmotr.net" version="2.3.5" provider-name="MrStealth, dandy">
+<addon id="plugin.video.kinoprosmotr.net" name="Kinoprosmotr.net" version="2.3.8" provider-name="MrStealth, dandy">
   <requires>
     <import addon="xbmc.python" version="2.1.0"/>
     <import addon="script.module.xbmc.helpers" version="2.0.0"/>
@@ -307,7 +307,7 @@
     </extension>
 </addon>
 
-<addon id="repository.dandy.kodi" name="Dandy's Kodi Repository" version="1.1.19" provider-name="dandy">
+<addon id="repository.dandy.kodi" name="Dandy's Kodi Repository" version="1.1.20" provider-name="dandy">
         <requires>
                 <import addon="xbmc.addon" version="13.0.0"/>
         </requires>
@@ -327,6 +327,24 @@
 		<disclaimer>Add-ons for home usage in Kodi</disclaimer>
 		<platform>all</platform>
 	</extension>
+</addon>
+
+<addon id="script.dandy.strm.marker" name="STRM Marker" version="1.0.0" provider-name="dandy">
+  <requires>
+    <import addon="xbmc.python" version="2.1.0"/>
+    <import addon="script.module.simplejson" version="3.3.0"/>
+  </requires>
+  <extension point="xbmc.python.script" library="default.py">
+  	<provides>executable</provides>
+  </extension>
+  <extension point="xbmc.addon.metadata">
+    <platform>all</platform>
+    <summary lang="en">STRM Marker</summary>
+    <description lang="en">Mark STRM content in Libraries</description>
+    <disclaimer lang="en"></disclaimer>
+    <language></language>
+    <license>GNU GPL v.3</license>
+  </extension>
 </addon>
 
 <addon id='script.module.favorites' name='Favorites for xbmc plugins' provider-name='mrstealth, dandy' version='2.1.0'>
@@ -353,7 +371,7 @@
   <extension point='xbmc.python.module' library='lib' />
 </addon>
 
-<addon id="script.module.videohosts" name="VideoHosts" version="1.1.3" provider-name="dandy">
+<addon id="script.module.videohosts" name="VideoHosts" version="1.1.4" provider-name="dandy">
   <requires>
     <import addon="xbmc.python" version="2.1.0"/>
     <import addon="script.module.xbmc.helpers" version="2.1.0"/>

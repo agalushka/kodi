@@ -13,11 +13,8 @@ QUALITY_TYPES = (360, 480, 720, 1080)
 
 
 def select_season(data):
-    xbmc.log("data=" + repr(data))    
     tvshow = common.parseDOM(data, "select", attrs={"name": "season"})[0]
-    xbmc.log("tvshow=" + repr(tvshow))
     seasons = common.parseDOM(tvshow, "option")
-    xbmc.log("seasons=" + repr(seasons))
     values = common.parseDOM(tvshow, "option", ret="value")
     if len(seasons) > 1:
         dialog = xbmcgui.Dialog()
@@ -46,7 +43,7 @@ def select_episode(data, url):
         "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/57.0.2987.133 Safari/537.36"
     }
     values = {
-        "season": season
+        "season": sindex
     }  
     encoded_kwargs = urllib.urlencode(values.items())
     argStr = "?%s" %(encoded_kwargs)
@@ -143,11 +140,11 @@ def get_playlist(url):
         if response == "":
             return manifest_links, subtitles, season, episode
 
-    response = response.split("media: [")[-1].split("]")[0]
-   
-    urls = re.compile("http:\/\/.*?[']").findall(response)
-    for i, url in enumerate(urls):
-        manifest_links[QUALITY_TYPES[i]] = url.replace("'", "") + "|Referer="+url_;
+    data = response.split("media: [")[-1].split("]")[0]
+    data = data.split('},{')
+    for i, item in enumerate(data):
+        url_ = "http:" + item.split("url: '")[-1].split("'")[0]
+        manifest_links[QUALITY_TYPES[i]] = url_ + "|Referer="+url_;
 
     return manifest_links, subtitles, season, episode 
    

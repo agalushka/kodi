@@ -169,25 +169,26 @@ class Kinoprosmotr():
         else:
             index_ = 0    
         if index_ < 0:
-            return ""
+            return "", ""
         else:
-            return values[index_], str(index_ + 1)
+            return values[index_], str(int(seasons[index_].split(" ")[-1]))
 
     def select_episode(self, data, url, headers):
         sindex = None
         eindex = None
         season, sindex = self.select_season(data)
+
         if season == "":
             return ""
 
         values = {
-            "season": season,
+            "season": sindex,
             "ref": self.domain
         }  
         encoded_kwargs = urllib.urlencode(values.items())
         argStr = "?%s" %(encoded_kwargs)
         try: 
-            request = urllib2.Request(url + argStr, "", headers)
+            request = urllib2.Request(url.split('?')[0] + argStr, "", headers)
             request.get_method = lambda: 'GET'
             data = urllib2.urlopen(request).read()
         except:
@@ -204,11 +205,10 @@ class Kinoprosmotr():
                 index_ = -1    
         else:
             index_ = 0  
+        if int(index_) < 0:            
+            return ""        
         episode = evalues[int(index_)]
         eindex = str(int(index_) + 1)
-        if int(index_) < 0:
-            return ""
-
 
         values = {
             "season": season,
@@ -255,8 +255,6 @@ class Kinoprosmotr():
                     link2 = vp[0].split(';pl=')[-1].split('&')[0]
                     values = common.fetchPage({"link": link2})
 
-            xbmc.log("values=" + repr(values))
-
             if not values and not links:
                 iframe = None
                 try:
@@ -269,11 +267,12 @@ class Kinoprosmotr():
                     except: 
                         pass
                 if iframe:
-                    import urlparse
-                    linkparse = urlparse.urlsplit(iframe)
+                    link=iframe
+                    #import urlparse
+                    #linkparse = urlparse.urlsplit(iframe)
                     host = "km396z9t3.xyz"
-                    iframe = urlparse.urlunsplit((linkparse.scheme, host, linkparse.path, '', ''))
-                    link = iframe + '?ref=' + self.domain
+                    #iframe = urlparse.urlunsplit((linkparse.scheme, host, linkparse.path, '', ''))
+                    #link = iframe + '?ref=' + self.domain
                     url2 = urllib.quote_plus(link)
                     headers = {
                        'Host': host,
@@ -286,15 +285,22 @@ class Kinoprosmotr():
                         response = urllib2.urlopen(request)
                         data = response.read()
 
+                        iframe = "http:" + common.parseDOM(data, "iframe", ret="src")[0]
+                        request = urllib2.Request(iframe, "", headers)
+                        request.get_method = lambda: 'GET'
+                        data = urllib2.urlopen(request).read()
+
                         #tvshow
                         tvshow = common.parseDOM(data, "select", attrs={"name": "season"})
                         if tvshow:
                             data = self.select_episode(data, iframe, headers)
+                            if (data == ""):
+                                return False
 
                         data = data.split('media: [')[-1].split('],')[0]
                         data = data.split('},{')
                         for item in data:
-                            url_ = item.split("url: '")[-1].split("'")[0]
+                            url_ = "http:" + item.split("url: '")[-1].split("'")[0]
                             links.append(url_)
                     except:
                         self.showErrorMessage('No media source (YouTube, ...)')
@@ -307,7 +313,6 @@ class Kinoprosmotr():
 
             image = common.parseDOM(poster, "img", ret="src")[0]
             image = self.url+image
-
 
             year = infos[2].split('</span>')[-1].split("(")[0].strip()
 
